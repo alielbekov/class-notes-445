@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Sidebar from './components/Sidebar';
 import ContentArea from './components/ContentArea';
 import './App.css';
 
 function App() {
-  const [topics] = useState([
-    { title: 'Topic 1', content: 'Content for Topic 1...' },
-    { title: 'Topic 2', content: 'Content for Topic 2...' },
-    { title: 'Topic 3', content: 'Content for Topic 3...' },
-    // ... other topics
-  ]);
-  const [selectedTopic, setSelectedTopic] = useState(topics[0]);
+  const [topics, setTopics] = useState([]);
+  const [selectedTopic, setSelectedTopic] = useState(null);
+
+  useEffect(() => {
+    const fetchTopics = async () => {
+      const apiUrl = `https://api.github.com/repos/alielbekov/class-notes-445/contents/`; // Adjust this URL to your repo
+      try {
+        const response = await axios.get(apiUrl);
+        const files = response.data
+          .filter(file => file.name.endsWith('.md')) // Only include Markdown files
+          .map(file => ({ title: file.name.replace('.md', ''), content: file.download_url })); // Extract needed info
+        setTopics(files);
+        setSelectedTopic(files[0]); // Automatically select the first topic
+      } catch (error) {
+        console.error('Error fetching topics:', error);
+      }
+    };
+
+    fetchTopics();
+  }, []);
+
+  if (!selectedTopic) return <div>Loading...</div>; // Show loading state
 
   return (
     <div className="app">
