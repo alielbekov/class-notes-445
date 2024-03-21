@@ -10,9 +10,11 @@ function App() {
 
   useEffect(() => {
     const fetchTopics = async () => {
-      const apiUrl = `https://api.github.com/repos/alielbekov/class-notes-445/contents/`; // Adjust this URL to your repo
+      // Point the apiUrl to the 'public/topics' directory in the repository
+      const apiUrl = `https://api.github.com/repos/alielbekov/class-notes-445/contents/public/topics/`;
       try {
         const response = await axios.get(apiUrl);
+        console.log(response.data);
         const files = response.data
           .filter(file => file.name.endsWith('.md')) // Only include Markdown files
           .map(file => ({ title: file.name.replace('.md', ''), content: file.download_url })); // Extract needed info
@@ -22,9 +24,10 @@ function App() {
         console.error('Error fetching topics:', error);
       }
     };
-
+  
     fetchTopics();
   }, []);
+  
 
   if (!selectedTopic) return <div>Loading...</div>; // Show loading state
 

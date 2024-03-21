@@ -6,30 +6,31 @@ function ContentArea({ selectedTopic }) {
   const [markdown, setMarkdown] = useState('');
 
   useEffect(() => {
-    // Ensure `selectedTopic` is an object with a `title` property; adjust as needed
-    if (!selectedTopic) return;
+    if (!selectedTopic) return; // Ensure `selectedTopic` is defined
 
     const fetchMarkdown = async () => {
-      // Adjusting to fetch raw Markdown content; replace `contents` with `raw` URL if possible
-      const apiUrl = `https://api.github.com/repos/alielbekov/class-notes-445/contents/${selectedTopic.title}.md`;
+      // Use the correct full path to the Markdown files, including the `public/topics` directory
+      const apiUrl = `https://api.github.com/repos/alielbekov/class-notes-445/contents/public/topics/${selectedTopic.title}.md`;
+
       try {
         const response = await axios.get(apiUrl, {
-          headers: { Accept: "application/vnd.github.v3.raw" }, // Request raw content
+          headers: { Accept: "application/vnd.github.v3.raw" }, // Request the raw content
         });
-        const content = response.data; // Directly use the raw content without `atob`
-        setMarkdown(marked(content));
+        const content = response.data; // Use the raw content directly
+        setMarkdown(marked(content)); // Convert Markdown to HTML
       } catch (error) {
         console.error('Error fetching markdown:', error);
       }
     };
 
     fetchMarkdown();
-  }, [selectedTopic]);
+  }, [selectedTopic]); // Rerun the effect when `selectedTopic` changes
 
   return (
     <div className="content-area">
       <div dangerouslySetInnerHTML={{ __html: markdown }} />
-      <a href={`https://github.com/alielbekov/class-notes-445/edit/main/${selectedTopic?.title}.md`}>
+      {/* Open the edit link in a new tab and use the correct path */}
+      <a target="_blank" rel="noopener noreferrer" href={`https://github.com/alielbekov/class-notes-445/edit/main/public/topics/${selectedTopic?.title}.md`}>
         Edit on GitHub
       </a>
     </div>
