@@ -9,14 +9,18 @@ function App() {
 
   useEffect(() => {
     const fetchTopics = async () => {
-      // Point the apiUrl to the 'public/topics' directory in the repository
       const apiUrl = `https://api.github.com/repos/alielbekov/class-notes-445/contents/public/topics/`;
       try {
         const response = await axios.get(apiUrl);
         console.log(response.data);
         const files = response.data
           .filter(file => file.name.endsWith('.md')) // Only include Markdown files
-          .map(file => ({ title: file.name.replace('.md', ''), content: file.download_url })); // Extract needed info
+          .map(file => ({ 
+            title: file.name.replace('.md', ''), 
+            content: file.download_url,
+            order: parseInt(file.name.match(/^\d+/)) // Extract the leading number to use for sorting
+          }))
+          .sort((a, b) => a.order - b.order); // Sort by the extracted number
         setTopics(files);
         setSelectedTopic(files[0]); // Automatically select the first topic
       } catch (error) {
@@ -27,7 +31,6 @@ function App() {
     fetchTopics();
   }, []);
   
-
   if (!selectedTopic) return <div>Loading...</div>; // Show loading state
 
   return (
