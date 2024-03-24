@@ -1,0 +1,29 @@
+img{
+    display: block;
+}
+
+.markdown-content h1, .markdown-content h2, .markdown-content h3 {
+    margin-top: 1rem;
+  }
+  
+  .markdown-content p {
+    margin-bottom: 1rem;
+  }
+  
+  .markdown-content pre {
+    background-color: #f8f9fa;
+    border: 1px solid #ececec;
+    padding: 10px;
+  }
+  
+  .markdown-content code {
+    background-color: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  
+  .markdown-content ul, .markdown-content ol {
+    padding-left: 20px;
+    margin-bottom: 1rem;
+  }
+  

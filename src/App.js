@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from './components/Sidebar';
 import ContentArea from './components/ContentArea';
-import './App.css';
 
 function App() {
   const [topics, setTopics] = useState([]);
@@ -32,9 +31,15 @@ function App() {
   if (!selectedTopic) return <div>Loading...</div>; // Show loading state
 
   return (
-    <div className="app">
-      <Sidebar topics={topics} onSelectTopic={setSelectedTopic} />
-      <ContentArea selectedTopic={selectedTopic} />
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-md-3">
+          <Sidebar topics={topics} onSelectTopic={setSelectedTopic} />
+        </div>
+        <div className="col-md-9">
+          <ContentArea selectedTopic={selectedTopic} />
+        </div>
+      </div>
     </div>
   );
 }

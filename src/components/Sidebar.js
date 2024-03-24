@@ -1,13 +1,12 @@
 import React from 'react';
-import styles from './Sidebar.module.css'; // Import the styles
 
 function Sidebar({ topics, onSelectTopic }) {
   return (
-    <div className={styles.sidebar}>
+    <div className="list-group">
       {topics.map((topic, index) => (
         <button
           key={index}
-          className={styles.button} // Use the styles as an object
+          className="list-group-item list-group-item-action"
           onClick={() => onSelectTopic(topic)}
         >
           {topic.title}
